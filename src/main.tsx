@@ -4,12 +4,15 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { MeditationProvider } from './context/MeditationContext.tsx'
+import { SessionProvider } from './context/SessionContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <MeditationProvider>
-        <App />
+        <SessionProvider>
+          <App />
+        </SessionProvider>
       </MeditationProvider>
     </BrowserRouter>
   </StrictMode>,

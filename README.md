@@ -1,32 +1,38 @@
-# React + TypeScript + Vite
+# Quiet Mind
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Sito di meditazione con timer programmabile, suoni ambientali e contenuti informativi sui benefici della meditazione.
 
-Currently, two official plugins are available:
+**Demo:** https://quiet-mind-react.netlify.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funzionalità
 
-## React Compiler
+- Timer programmabile (preset 3/5/10/15/20 minuti o durata personalizzata), con stop e ripresa
+- La sessione sopravvive alla navigazione tra pagine: una mini console flottante mostra il countdown e i controlli quando si lascia la pagina Meditate
+- Suoni ambientali (pioggia, onde, rumore bianco) generati via Web Audio API, senza file audio esterni
+- Pagina dedicata ai benefici della meditazione, con consigli e citazioni
+- Tema chiaro/scuro, statistiche di sessione salvate in localStorage
+- Design responsive
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack tecnico
 
-## Expanding the Oxlint configuration
+- React + TypeScript + Vite
+- React Router
+- Context API (`MeditationContext` per tema/statistiche, `SessionContext` per timer e audio)
+- Tailwind CSS
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Avvio locale
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Build di produzione:
+
+```bash
+npm run build
+```
+
+## Note tecniche
+
+- **Autoplay audio:** i suoni ambientali usano la Web Audio API, che i browser avviano solo dopo un'interazione esplicita dell'utente (politica di autoplay). Nell'app funziona perché il suono viene scelto con un click; se in futuro si volesse far partire un suono automaticamente insieme al timer, va previsto un gesto dell'utente che sblocchi l'`AudioContext` prima.

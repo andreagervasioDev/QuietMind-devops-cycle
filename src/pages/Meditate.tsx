@@ -1,46 +1,27 @@
-import { useCallback, useState } from 'react';
 import { CircularTimer } from '../components/CircularTimer';
 import { DurationPicker } from '../components/DurationPicker';
 import { SoundPicker } from '../components/SoundPicker';
 import { useMeditation } from '../context/MeditationContext';
-import { useAmbientSound } from '../hooks/useAmbientSound';
-import { useTimer } from '../hooks/useTimer';
+import { useSession } from '../context/SessionContext';
 
 export function Meditate() {
-  const { defaultDurationMinutes, setDefaultDuration, completeSession, sessionsCompleted, totalMinutesMeditated } =
-    useMeditation();
-
-  const [minutes, setMinutes] = useState(defaultDurationMinutes);
-  const [justFinished, setJustFinished] = useState(false);
-
-  const handleComplete = useCallback(() => {
-    completeSession(minutes);
-    setJustFinished(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minutes]);
-
-  const { secondsLeft, isRunning, progress, start, pause, reset, setDuration } = useTimer(minutes * 60, {
-    onComplete: handleComplete,
-  });
-
-  const { sound, setSound, volume, setVolume } = useAmbientSound();
-
-  function handleSelectMinutes(nextMinutes: number) {
-    setMinutes(nextMinutes);
-    setDefaultDuration(nextMinutes);
-    setDuration(nextMinutes * 60);
-    setJustFinished(false);
-  }
-
-  function handleStart() {
-    setJustFinished(false);
-    start();
-  }
-
-  function handleReset() {
-    reset(minutes * 60);
-    setJustFinished(false);
-  }
+  const { sessionsCompleted, totalMinutesMeditated } = useMeditation();
+  const {
+    minutes,
+    selectMinutes,
+    secondsLeft,
+    totalSeconds,
+    isRunning,
+    progress,
+    start,
+    pause,
+    reset,
+    justFinished,
+    sound,
+    setSound,
+    volume,
+    setVolume,
+  } = useSession();
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center gap-10 px-4 py-12 sm:px-6">
@@ -63,11 +44,11 @@ export function Meditate() {
         {!isRunning ? (
           <button
             type="button"
-            onClick={handleStart}
+            onClick={start}
             disabled={secondsLeft === 0}
             className="rounded-full bg-sage-500 px-8 py-2.5 font-medium text-white shadow-sm transition-colors hover:bg-sage-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {secondsLeft === minutes * 60 ? 'Inizia' : 'Riprendi'}
+            {secondsLeft === totalSeconds ? 'Inizia' : 'Riprendi'}
           </button>
         ) : (
           <button
@@ -81,7 +62,7 @@ export function Meditate() {
 
         <button
           type="button"
-          onClick={handleReset}
+          onClick={reset}
           className="rounded-full border border-sage-200 px-6 py-2.5 font-medium text-sage-600 transition-colors hover:border-sage-400 dark:border-sage-700 dark:text-sage-200"
         >
           Reset
@@ -93,7 +74,7 @@ export function Meditate() {
           <h2 className="mb-2 text-center text-sm font-semibold uppercase tracking-wide text-sage-500 dark:text-sage-400">
             Durata
           </h2>
-          <DurationPicker minutes={minutes} onSelect={handleSelectMinutes} disabled={isRunning} />
+          <DurationPicker minutes={minutes} onSelect={selectMinutes} disabled={isRunning} />
         </div>
 
         <div>

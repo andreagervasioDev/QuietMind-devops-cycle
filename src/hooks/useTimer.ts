@@ -36,10 +36,11 @@ export function useTimer(initialSeconds: number, { onComplete }: UseTimerOptions
 
   const start = useCallback(() => {
     if (secondsLeft <= 0) return;
+    clear();
     endTimeRef.current = Date.now() + secondsLeft * 1000;
     intervalRef.current = window.setInterval(tick, 250);
     setIsRunning(true);
-  }, [secondsLeft, tick]);
+  }, [secondsLeft, tick, clear]);
 
   const pause = useCallback(() => {
     clear();

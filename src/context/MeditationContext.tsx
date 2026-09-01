@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, type ReactNode } from 'react';
 
 export type Theme = 'light' | 'dark';
 
@@ -70,12 +70,19 @@ export function MeditationProvider({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle('dark', state.theme === 'dark');
   }, [state.theme]);
 
-  const value: MeditationContextValue = {
-    ...state,
-    toggleTheme: () => dispatch({ type: 'TOGGLE_THEME' }),
-    setDefaultDuration: (minutes) => dispatch({ type: 'SET_DEFAULT_DURATION', minutes }),
-    completeSession: (minutes) => dispatch({ type: 'COMPLETE_SESSION', minutes }),
-  };
+  const toggleTheme = useCallback(() => dispatch({ type: 'TOGGLE_THEME' }), []);
+  const setDefaultDuration = useCallback((minutes: number) => dispatch({ type: 'SET_DEFAULT_DURATION', minutes }), []);
+  const completeSession = useCallback((minutes: number) => dispatch({ type: 'COMPLETE_SESSION', minutes }), []);
+
+  const value = useMemo<MeditationContextValue>(
+    () => ({
+      ...state,
+      toggleTheme,
+      setDefaultDuration,
+      completeSession,
+    }),
+    [state, toggleTheme, setDefaultDuration, completeSession],
+  );
 
   return <MeditationContext.Provider value={value}>{children}</MeditationContext.Provider>;
 }

@@ -11,7 +11,7 @@ export function Navbar() {
   const { theme, toggleTheme } = useMeditation();
 
   return (
-    <header className="sticky top-0 z-10 border-b border-sage-100 bg-sand-50/80 backdrop-blur dark:border-sage-800 dark:bg-sage-900/80">
+    <header className="border-b border-sage-100 bg-sand-50/80 backdrop-blur dark:border-sage-800 dark:bg-sage-900/80">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         <NavLink to="/" className="flex items-center gap-2 font-display text-lg font-semibold text-sage-700 dark:text-sage-100">
           <span aria-hidden="true">🌿</span>
