@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Learn } from './pages/Learn';
 import { Meditate } from './pages/Meditate';
+import { DebugError } from './pages/DebugError';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/meditate" element={<Meditate />} />
           <Route path="/learn" element={<Learn />} />
+          <Route path="/debug/error" element={<DebugError />} />
         </Routes>
       </main>
       <Footer />

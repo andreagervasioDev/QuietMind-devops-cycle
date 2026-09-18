@@ -1,6 +1,7 @@
 import { BenefitCard } from '../components/BenefitCard';
 import { MountainsIllustration, WavesIllustration } from '../components/Illustrations';
 import { QuoteCard } from '../components/QuoteCard';
+import { useQuotes } from '../hooks/useQuotes';
 
 const BENEFITS = [
   { icon: '🧘', title: 'Riduce lo stress', description: 'Abbassa i livelli di cortisolo e calma il sistema nervoso.' },
@@ -26,6 +27,8 @@ const TIPS = [
 ];
 
 export function Learn() {
+  const { quotes, source } = useQuotes(QUOTES);
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
       <section className="text-center">
@@ -59,10 +62,13 @@ export function Learn() {
       <WavesIllustration className="mt-16 h-24 w-full rounded-2xl" />
 
       <section className="mt-10 grid gap-4 sm:grid-cols-3">
-        {QUOTES.map((item) => (
+        {quotes.map((item) => (
           <QuoteCard key={item.quote} {...item} />
         ))}
       </section>
+      <p className="mt-3 text-center text-xs text-sage-400 dark:text-sage-500">
+        Citazioni caricate da: {source === 'api' ? 'API backend' : 'contenuti incorporati'}
+      </p>
     </div>
   );
 }
