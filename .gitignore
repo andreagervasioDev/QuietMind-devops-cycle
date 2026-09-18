@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets: variabili d'ambiente locali (solo .env.example va nel repo)
+.env
+.env.*
+!.env.example

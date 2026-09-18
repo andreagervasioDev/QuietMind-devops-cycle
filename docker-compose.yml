@@ -1,0 +1,34 @@
+# Ambiente di sviluppo locale: frontend (nginx) + backend (Node).
+#   docker compose up --build      avvia tutto
+#   docker compose ps              stato e health dei container
+#   docker compose logs -f         log in tempo reale
+#   docker compose down            ferma e rimuove i container
+#
+# Le variabili vengono lette da .env (copia .env.example -> .env, mai committato).
+services:
+  backend:
+    build: ./backend
+    container_name: quiet-mind-api
+    env_file: .env
+    environment:
+      PORT: 3001
+      APP_ENV: ${APP_ENV:-development}
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      args:
+        # Dentro compose il frontend chiama il backend tramite il proxy nginx (/api -> backend:3001).
+        VITE_API_URL: /
+        VITE_APP_ENV: ${APP_ENV:-development}
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
+    container_name: quiet-mind-web
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    restart: unless-stopped
