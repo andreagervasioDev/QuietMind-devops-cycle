@@ -1,9 +1,9 @@
 # Quiet Mind — ciclo DevOps completo
 
-[![CI/CD](https://github.com/andreagervasioDev/Quiet-mind/actions/workflows/ci-cd.yml/badge.svg?branch=main)](https://github.com/andreagervasioDev/Quiet-mind/actions/workflows/ci-cd.yml)
+[![CI/CD](https://github.com/andreagervasioDev/QuietMind-devops-cycle/actions/workflows/ci-cd.yml/badge.svg?branch=main)](https://github.com/andreagervasioDev/QuietMind-devops-cycle/actions/workflows/ci-cd.yml)
 
-**Produzione:** https://andreagervasiodev.github.io/Quiet-mind/
-**Pipeline:** https://github.com/andreagervasioDev/Quiet-mind/actions
+**Produzione:** https://andreagervasiodev.github.io/QuietMind-devops-cycle/
+**Pipeline:** https://github.com/andreagervasioDev/QuietMind-devops-cycle/actions
 
 Quiet Mind è un'app di meditazione sviluppata durante il Master (React + TypeScript + Vite). Questo repository
 la porta dal computer locale alla produzione con un ciclo DevOps completo: container, pipeline CI/CD,
@@ -54,7 +54,7 @@ Quiet Mind è una **Single Page Application** per meditare:
 |---|---|---|---|---|
 | **development** | Computer dello sviluppatore | `npm run dev` oppure `docker compose up` | Frontend + backend locali, hot reload, Sentry disattivato se il DSN è vuoto | `.env` locale (copiato da `.env.example`) |
 | **staging** | GitHub Actions + GitHub Container Registry | push sul branch `develop` o apertura di una pull request | Stessa pipeline di produzione (lint, typecheck, build, immagine Docker, smoke test). Le immagini vengono pubblicate su GHCR con tag `staging` e il `dist/` è scaricabile come artifact. Serve a validare il codice **prima** che tocchi `main` | Secret del repository, `VITE_APP_ENV=staging` |
-| **production** | GitHub Pages (`https://andreagervasiodev.github.io/Quiet-mind/`) | push (o merge) sul branch `main` | Deploy automatico solo se tutta la CI è verde; immagini taggate `latest`; environment GitHub `github-pages` con URL tracciato | Secret del repository, `VITE_APP_ENV=production` |
+| **production** | GitHub Pages (`https://andreagervasiodev.github.io/QuietMind-devops-cycle/`) | push (o merge) sul branch `main` | Deploy automatico solo se tutta la CI è verde; immagini taggate `latest`; environment GitHub `github-pages` con URL tracciato | Secret del repository, `VITE_APP_ENV=production` |
 
 Flusso di lavoro: feature branch → pull request verso `develop` (CI) → merge su `develop` (staging) → pull request `develop` → `main` → merge (produzione).
 
@@ -267,14 +267,15 @@ Il job `deploy` estende la stessa pipeline:
 
 ### Dettagli tecnici del deploy su Pages
 
-- Il sito vive in una sottocartella (`/Quiet-mind/`): la pipeline imposta `VITE_BASE_PATH=/Quiet-mind/`,
-  Vite usa `base` e React Router usa `basename={import.meta.env.BASE_URL}`.
-- `404.html` è una copia di `index.html`: ricaricando `/Quiet-mind/learn` GitHub Pages serve la SPA e il router
-  mostra la pagina giusta.
+- Il sito vive in una sottocartella (`/QuietMind-devops-cycle/`): la pipeline imposta
+  `VITE_BASE_PATH=/QuietMind-devops-cycle/` (calcolato automaticamente dal nome del repository), Vite usa
+  `base` e React Router usa `basename={import.meta.env.BASE_URL}`.
+- `404.html` è una copia di `index.html`: ricaricando `/QuietMind-devops-cycle/learn` GitHub Pages serve la
+  SPA e il router mostra la pagina giusta.
 - `.nojekyll` evita che Pages ignori i file con underscore.
 
-**URL pubblico:** https://andreagervasiodev.github.io/Quiet-mind/
-**Run della pipeline:** https://github.com/andreagervasioDev/Quiet-mind/actions/workflows/ci-cd.yml
+**URL pubblico:** https://andreagervasiodev.github.io/QuietMind-devops-cycle/
+**Run della pipeline:** https://github.com/andreagervasioDev/QuietMind-devops-cycle/actions/workflows/ci-cd.yml
 
 ---
 
@@ -290,7 +291,7 @@ Configurazione (UptimeRobot → Add New Monitor):
 |---|---|
 | Monitor type | HTTP(s) |
 | Friendly name | Quiet Mind (production) |
-| URL | `https://andreagervasiodev.github.io/Quiet-mind/` |
+| URL | `https://andreagervasiodev.github.io/QuietMind-devops-cycle/` |
 | Monitoring interval | 5 minuti |
 | Alert contacts | e-mail |
 
@@ -309,7 +310,7 @@ Screenshot: `docs/screenshots/uptimerobot.png`.
 ### Simulazione di un errore
 
 Pagina nascosta **`/debug/error`** ([src/pages/DebugError.tsx](src/pages/DebugError.tsx)), raggiungibile solo
-digitando l'URL: `https://andreagervasiodev.github.io/Quiet-mind/debug/error`
+digitando l'URL: `https://andreagervasiodev.github.io/QuietMind-devops-cycle/debug/error`
 
 | Pulsante | Cosa succede | Cosa vedi in Sentry |
 |---|---|---|
@@ -371,9 +372,9 @@ non hanno rotto l'app; quelle catturate dall'ErrorBoundary sì.
 
 | Requisito | Prova |
 |---|---|
-| Pipeline verde | https://github.com/andreagervasioDev/Quiet-mind/actions/workflows/ci-cd.yml — `docs/screenshots/ci-green.png` |
+| Pipeline verde | https://github.com/andreagervasioDev/QuietMind-devops-cycle/actions/workflows/ci-cd.yml — `docs/screenshots/ci-green.png` |
 | Lint che fallisce in modo visibile | `docs/screenshots/ci-lint-failed.png` |
-| URL pubblico funzionante | https://andreagervasiodev.github.io/Quiet-mind/ |
+| URL pubblico funzionante | https://andreagervasiodev.github.io/QuietMind-devops-cycle/ |
 | Run della pipeline con deploy | link all'ultimo run su `main` (job `deploy`, environment `github-pages`) |
 | Secret non visibili nei log | `docs/screenshots/secrets-masked.png` |
 | Uptime monitor attivo | `docs/screenshots/uptimerobot.png` |
