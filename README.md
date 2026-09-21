@@ -177,7 +177,7 @@ Da **Settings → Secrets and variables → Actions → New repository secret**:
 
 | Secret | Uso | Obbligatorio |
 |---|---|---|
-| `VITE_SENTRY_DSN` | DSN del progetto Sentry, iniettato nella build di produzione | Sì per il monitoraggio (senza, Sentry resta spento e la pipeline avvisa con un warning) |
+| `VITE_SENTRY_DSN` | DSN del progetto Sentry, iniettato nella build di produzione | Sì per il monitoraggio (senza, Sentry resta spento e la pipeline avvisa con un warning) — **configurato** |
 
 Il token per GHCR e per il deploy su Pages è il `GITHUB_TOKEN` generato automaticamente per ogni run:
 non va creato né salvato.
